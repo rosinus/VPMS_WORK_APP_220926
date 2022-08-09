@@ -2,7 +2,10 @@ package com.vigeo.fnur.main.view
 
 import android.R
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -31,15 +34,24 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mainBinding.root)
-        val items = arrayOf("아이템0","아이템1","아이템2","아이템3","아이템4")
+        val items = arrayOf("전체","태국","말레이시아")
 
         val myAdapter = ArrayAdapter(this, R.layout.simple_spinner_dropdown_item, items)
         var spinner = mainBinding.countrySpinner
         spinner.adapter = myAdapter
 
-      /*  var list = {'선택', '태국', '말레이시아'}
+        spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                // TODO: 클릭했을때 변경되는 로직
+            }
 
-        */
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
+        })
 
 
     }
