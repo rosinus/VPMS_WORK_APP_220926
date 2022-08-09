@@ -17,9 +17,6 @@
         android:theme="@style/Theme.Fnur"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/spinner_item" />
 
         <activity
             android:name=".main.view.MainActivity"
