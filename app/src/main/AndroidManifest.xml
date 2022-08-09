@@ -3,19 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.vigeo.fnur">
 
+    <!-- INTERNET 인터넷 연결 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/fnur_logo"
+        android:label="브이누리"
+        android:roundIcon="@mipmap/fnur_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fnur"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/spinner_item" />
+
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".main.view.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

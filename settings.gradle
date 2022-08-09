@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "fnur"
+rootProject.name = "FNUR_APP_20220808"
 include ':app'
