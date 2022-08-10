@@ -5,46 +5,40 @@ import kotlin.collections.ArrayList
 
 data class MainVO(
 
-    @SerializedName("faqList")
-    val faqList: ArrayList<faqListObject>,
+    @SerializedName("medicineListCnt")
+    val medicineListCnt: Int,
+
+    @SerializedName("medicineList")
+    val medicineList: ArrayList<medicineListObject>,
 
     @SerializedName("message")
     val message: String,
 
     @SerializedName("error")
     val error: String,
-
-    @SerializedName("userChack")
-    val userChack: String,
-
-    @SerializedName("userMileageList")
-    val userMileageList: ArrayList<mileageListObject>,
-
-    @SerializedName("totalMileageCnt")
-    val totalMileageCnt: String,
 )
 
-data class mileageListObject(
-    @SerializedName("userNm")
-    val userNm: String,
+data class medicineListObject(
+    @SerializedName("medNo")
+    val medNo: String,
 
-    @SerializedName("cmpnyNm")
-    val cmpnyNm: String,
+    @SerializedName("medNm")
+    val medNm: String,
 
-    @SerializedName("mileageCnt")
-    val mileageCnt: String,
+    @SerializedName("medSymptom")
+    val medSymptom: String,
 
-    @SerializedName("prodWeight")
-    val prodWeight: String,
+    @SerializedName("medCountry")
+    val medCountry: String,
 
-    @SerializedName("collectAddr")
-    val collectAddr: String,
+    @SerializedName("useYn")
+    val useYn: String,
 
-    @SerializedName("collectGbNm")
-    val collectGbNm: String,
+    @SerializedName("medImg")
+    val medImg: String,
 
-    @SerializedName("collectDate")
-    val collectDate: String,
+    @SerializedName("regDate")
+    val regDate: String,
 )
 
 data class faqListObject(

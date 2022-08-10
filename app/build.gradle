@@ -33,6 +33,7 @@ android {
         // 뷰 바인딩 활성화
         viewBinding true
     }
+
 }
 
 dependencies {
@@ -68,6 +69,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
 
+    // Coil
+    implementation 'io.coil-kt:coil:2.0.0-rc03'
+
     // Coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
@@ -75,4 +79,5 @@ dependencies {
     //내부 저장소
     implementation 'com.github.rtoshiro.securesharedpreferences:securesharedpreferences:1.2.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
+
 }

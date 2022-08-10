@@ -7,12 +7,21 @@ import java.util.*
 
 interface MainService {
 
-    //faqList 불러오기
+    //medicineAppList 불러오기
     @FormUrlEncoded
-    @POST("appApi/userApp/faqList.do")
-    fun faqList(@Field("vigeoToken") vigeoToken : String = "O304UIUw3P78ZZPC5qBkmQ==",
-                @Field("userGb") userGb : String = "03"
+    @POST("pjt/medicine/medicineAppList.do")
+    fun medicineAppList(
+        @Field("vigeoToken") vigeoToken : String = "O304UIUw3P78ZZPC5qBkmQ==",
+        @Field("medSymptom") medSymptom : String = "",
+        @Field("medCountry") medCountry : String = ""
     ): Call<MainVO>
+
+
+
+
+
+
+
 
     //userMileage 불러오기
     @FormUrlEncoded
