@@ -42,12 +42,15 @@ class MainActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
+    var selectItems : ArrayList<String> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mainBinding.root)
 
         // 메뉴를 받아와서 뿌린다면 아래 주석처리된 소스를 사용하면됨.
         // 특히 이미지를 같이 받아와서 쓴다면 더좋다. 글자만 받아온다면 문제가 생길수 있음.
+
         /*
         /* 여백, 너비에 대한 정의 */
         val screenWidth = resources.displayMetrics.widthPixels // 스마트폰의 너비 길이를 가져옴
@@ -62,9 +65,65 @@ class MainActivity : AppCompatActivity() {
          mainBinding.viewPagerMenu.adapter = viewPagerMenuAdapter(layoutInflater, menuItems) // 어댑터 생성
          mainBinding.viewPagerMenu.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
         */
+        var spinner = mainBinding.countrySpinner
 
+        //전체선택
+        mainBinding.menuAll.setOnClickListener{
+            medList();
+        }
 
-        val selectItems = arrayOf("전체", "태국", "말레이시아")
+        mainBinding.menuHeadache.setOnClickListener{
+            var selectSpinner = spinner.selectedItem.toString()
+            if(selectSpinner == "전체"){
+                selectSpinner = ""
+            }
+
+            medList(medSymptom = "두통", medCountry = selectSpinner)
+        }
+
+        mainBinding.menuCold.setOnClickListener{
+
+            var selectSpinner = spinner.selectedItem.toString()
+            if(selectSpinner == "전체"){
+                selectSpinner = ""
+            }
+
+            medList(medSymptom = "감기", medCountry = selectSpinner)
+        }
+
+        mainBinding.menuDyspepsia.setOnClickListener{
+            var selectSpinner = spinner.selectedItem.toString()
+            if(selectSpinner == "전체"){
+                selectSpinner = ""
+            }
+
+            medList(medSymptom = "소화불량", medCountry = selectSpinner)
+        }
+
+        mainBinding.menuToothache.setOnClickListener{
+            var selectSpinner = spinner.selectedItem.toString()
+            if(selectSpinner == "전체"){
+                selectSpinner = ""
+            }
+
+            medList(medSymptom = "치통", medCountry = selectSpinner)
+        }
+
+        mainBinding.menuJoint.setOnClickListener{
+            var selectSpinner = spinner.selectedItem.toString()
+            if(selectSpinner == "전체"){
+                selectSpinner = ""
+            }
+
+            medList(medSymptom = "관절통", medCountry = selectSpinner)
+        }
+
+        countryList()
+
+        medList();
+    }
+
+    fun spinner() {
         //스피너(select box)
         val myAdapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, selectItems)
         var spinner = mainBinding.countrySpinner
@@ -77,13 +136,49 @@ class MainActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
+                var selectSpinner = spinner.selectedItem.toString()
+                if(selectSpinner == "전체"){
+                    selectSpinner = ""
+                }
+
+                medList(medCountry = selectSpinner)
                 // TODO: 클릭했을때 변경되는 로직
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         })
+    }
 
-        medList();
+    fun countryList() {
+        retrofit.create(MainService::class.java).countryAppList().enqueue(object :
+            Callback<MainVO> {
+            override fun onResponse(call: Call<MainVO>, response: Response<MainVO>) {
+
+                if(response.isSuccessful && response.body()!!.message != "error" ){
+                    // 정상적으로 통신이 성공된 경우
+                    var mainVO = response.body()!!
+                    Log.d("medicineAppList : ", "onResponse 성공: " + mainVO.toString());
+                    selectItems.add("전체")
+
+                    //나라 이름 넣어주기 작업
+                    for (commonCodeObject in mainVO.countryAppList){
+                        selectItems.add(commonCodeObject.comNm)
+                    }
+
+                    spinner();
+
+                }else{
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    if(response.isSuccessful){
+                        Log.d("MileageList : ", "onResponse 실패")
+
+                    }
+                }
+            }
+            override fun onFailure(call: Call<MainVO>, t: Throwable) {
+                Log.d("MileageList : ", "onResponse 실패")
+            }
+        })
     }
 
     fun medList(medSymptom :String = "", medCountry :String = "") {
@@ -99,8 +194,12 @@ class MainActivity : AppCompatActivity() {
                     val adapter = mainAdapter(layoutInflater, mainVO, this@MainActivity)
                     adapter.notifyDataSetChanged()
                     mainBinding.recyclerMedicine.adapter = adapter
-                    mainBinding.recyclerMedicine.layoutManager = GridLayoutManager(this@MainActivity, 2)
 
+                    if(mainVO.medicineList.size > 0){
+                        mainBinding.recyclerMedicine.layoutManager = GridLayoutManager(this@MainActivity, 2)
+                    }else{
+                        mainBinding.recyclerMedicine.layoutManager = LinearLayoutManager(this@MainActivity)
+                    }
                 }else{
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                     if(response.isSuccessful){
@@ -119,7 +218,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
 }
 
 
@@ -130,6 +228,17 @@ class mainAdapter(
     var mainVO: MainVO,
     var context: Context
 ) : RecyclerView.Adapter<mainAdapter.ViewHolder>() {
+
+    /* retrofit DB 연결 */
+    val gson: Gson = GsonBuilder()
+        .setLenient()
+        .create()
+
+    val retrofit = Retrofit.Builder()
+        .baseUrl("http://192.168.0.193:8080/") // http://avcm.vigeotech.com/
+        .client(OkHttpClient())
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .build()
 
     class ViewHolder(
         recyclerMainbinding: RecyclerMainMedBinding,
@@ -163,14 +272,14 @@ class mainAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (mainVO.medicineListCnt != 0) {
+
             holder.recyclerMainbinding.recyclerMedicineImg.load(mainVO.medicineList[position].medImg) {
             }
 
             holder.recyclerMainbinding.recyclerMedicineImg.apply {
                 setOnClickListener {
-                    //mainVO.medicineList[position].medNo
-                    var str : String = "엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다.엄청긴 문장을 테스트해봅니다."
-                    detailDialog(str,str,str,str)
+
+                    medSelect(mainVO.medicineList[position].medNo)
                 }
             }
         }
@@ -184,10 +293,9 @@ class mainAdapter(
         }
     }
 
-    //오류 시 팝업
-    fun detailDialog(medDetailEffects: String, medDetailUsage: String, medDetailContraindications: String , medDetailPrecautions: String){
+    //물품 선택시 상세 팝업
+    fun detailDialog( medDetailEffects: String, medDetailUsage: String, medDetailContraindications: String , medDetailPrecautions: String){
 
-        //val errorDialogView : View = layoutInflater.inflate(R.layout., null)
         val detailDialogView : View = layoutInflater.inflate(R.layout.pop_med_detail, null)
         val detailDialog : BottomSheetDialog = BottomSheetDialog(context)
         detailDialog.setContentView(detailDialogView)
@@ -196,13 +304,38 @@ class mainAdapter(
         val detailBinding: PopMedDetailBinding by lazy {
             PopMedDetailBinding.bind(detailDialogView)
         }
-
         detailBinding.medDetailEffects.text = medDetailEffects
         detailBinding.medDetailUsage.text = medDetailUsage
         detailBinding.medDetailContraindications.text = medDetailContraindications
         detailBinding.medDetailPrecautions.text = medDetailPrecautions
 
         detailDialog.show()
+    }
+
+    fun medSelect(medNo :String = "") {
+        retrofit.create(MainService::class.java).medicineAppSelect(medNo = medNo).enqueue(object :
+            Callback<MainVO> {
+            override fun onResponse(call: Call<MainVO>, response: Response<MainVO>) {
+
+                if(response.isSuccessful && response.body()!!.message != "error" ){
+                    // 정상적으로 통신이 성공된 경우
+                    var mainVO = response.body()!!
+                    Log.d("medicineAppList : ", "onResponse 성공: " + mainVO.toString());
+
+                    detailDialog(mainVO.medicineSelect.medEffects,mainVO.medicineSelect.medUsage,mainVO.medicineSelect.medContraindications,mainVO.medicineSelect.medPrecautions)
+
+                }else{
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    if(response.isSuccessful){
+                        Log.d("MileageList : ", "onResponse 실패")
+                        Toast.makeText(context, "통신이 실패했습니다. 관리자에게 문의해주세요.", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<MainVO>, t: Throwable) {
+                Log.d("MileageList : ", "onResponse 실패")
+            }
+        })
     }
 }
 

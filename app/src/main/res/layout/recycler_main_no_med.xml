@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="등록된 의약품이 없습니다."
+        android:paddingTop="40dp"
         android:textSize="30dp"
         android:gravity="center"
         android:textStyle="bold"
