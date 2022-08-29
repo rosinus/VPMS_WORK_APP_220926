@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         .create()
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.0.193:8080/") // http://avcm.vigeotech.com/
+        .baseUrl("http://fnuri.vigeotech.com/") // http://avcm.vigeotech.com/
         .client(OkHttpClient())
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
@@ -128,7 +128,6 @@ class MainActivity : AppCompatActivity() {
         val myAdapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, selectItems)
         var spinner = mainBinding.countrySpinner
         spinner.adapter = myAdapter
-
         spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 adapterView: AdapterView<*>?,
@@ -235,7 +234,7 @@ class mainAdapter(
         .create()
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.0.193:8080/") // http://avcm.vigeotech.com/
+        .baseUrl("http://fnuri.vigeotech.com/") // http://avcm.vigeotech.com/
         .client(OkHttpClient())
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
