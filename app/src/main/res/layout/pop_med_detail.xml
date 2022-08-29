@@ -19,17 +19,49 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:paddingLeft="15dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="약품 상세설명"
-                android:textColor="@color/black"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:gravity="left"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="약품 상세설명"
+                    android:textColor="@color/black"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/med_detail_close"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="x"
+                    android:textColor="@color/black"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+
+            <ImageView
+                android:id="@+id/med_detail_img"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/img_border"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center">
+            </ImageView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -125,6 +157,18 @@
                 android:paddingBottom="5dp"
                 android:text="성인은 1회 1정으로 ..."
                 android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:text="보다 자세한 사항은 의사,약사와 상담하십시요."
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
         </LinearLayout>

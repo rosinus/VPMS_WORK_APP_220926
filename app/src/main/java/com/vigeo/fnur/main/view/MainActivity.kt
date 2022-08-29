@@ -294,7 +294,13 @@ class mainAdapter(
     }
 
     //물품 선택시 상세 팝업
-    fun detailDialog(medDetailEffects: String, medDetailUsage: String, medDetailContraindications: String, medDetailPrecautions: String){
+    fun detailDialog(
+        medDetailEffects: String,
+        medDetailUsage: String,
+        medDetailContraindications: String,
+        medDetailPrecautions: String,
+        medImg: String
+    ){
 
         val detailDialogView : View = layoutInflater.inflate(R.layout.pop_med_detail, null)
         val detailDialog : BottomSheetDialog = BottomSheetDialog(context)
@@ -335,10 +341,17 @@ class mainAdapter(
             medDetailPrecautionsTemp = medDetailPrecautions
         }
 
+        detailBinding.medDetailImg.load(medImg) {
+        }
+
         detailBinding.medDetailEffects.text = medDetailEffectsTemp
         detailBinding.medDetailUsage.text = medDetailUsageTemp
         detailBinding.medDetailContraindications.text = medDetailContraindicationsTemp
         detailBinding.medDetailPrecautions.text = medDetailPrecautionsTemp
+
+        detailBinding.medDetailClose.setOnClickListener{
+            detailDialog.dismiss()
+        }
 
         detailDialog.show()
     }
@@ -353,7 +366,7 @@ class mainAdapter(
                     var mainVO = response.body()!!
                     Log.d("medicineAppList : ", "onResponse 성공: " + mainVO.toString());
 
-                    detailDialog(mainVO.medicineSelect.medEffects,mainVO.medicineSelect.medUsage,mainVO.medicineSelect.medContraindications,mainVO.medicineSelect.medPrecautions)
+                    detailDialog(mainVO.medicineSelect.medEffects,mainVO.medicineSelect.medUsage,mainVO.medicineSelect.medContraindications,mainVO.medicineSelect.medPrecautions, mainVO.medicineSelect.medImg)
 
                 }else{
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
