@@ -69,7 +69,8 @@ class MainActivity : AppCompatActivity() {
 
         //전체선택
         mainBinding.menuAll.setOnClickListener{
-            medList();
+            var selectSpinner = spinner.selectedItem.toString()
+            medList(medCountry = selectSpinner);
         }
 
         mainBinding.menuHeadache.setOnClickListener{
@@ -157,7 +158,7 @@ class MainActivity : AppCompatActivity() {
                     // 정상적으로 통신이 성공된 경우
                     var mainVO = response.body()!!
                     Log.d("medicineAppList : ", "onResponse 성공: " + mainVO.toString());
-                    selectItems.add("전체")
+                    //selectItems.add("전체")
 
                     //나라 이름 넣어주기 작업
                     for (commonCodeObject in mainVO.countryAppList){
@@ -293,7 +294,7 @@ class mainAdapter(
     }
 
     //물품 선택시 상세 팝업
-    fun detailDialog( medDetailEffects: String, medDetailUsage: String, medDetailContraindications: String , medDetailPrecautions: String){
+    fun detailDialog(medDetailEffects: String, medDetailUsage: String, medDetailContraindications: String, medDetailPrecautions: String){
 
         val detailDialogView : View = layoutInflater.inflate(R.layout.pop_med_detail, null)
         val detailDialog : BottomSheetDialog = BottomSheetDialog(context)
@@ -303,10 +304,41 @@ class mainAdapter(
         val detailBinding: PopMedDetailBinding by lazy {
             PopMedDetailBinding.bind(detailDialogView)
         }
-        detailBinding.medDetailEffects.text = medDetailEffects
-        detailBinding.medDetailUsage.text = medDetailUsage
-        detailBinding.medDetailContraindications.text = medDetailContraindications
-        detailBinding.medDetailPrecautions.text = medDetailPrecautions
+
+        var medDetailEffectsTemp : String = ""
+        var medDetailUsageTemp : String = ""
+        var medDetailContraindicationsTemp : String = ""
+        var medDetailPrecautionsTemp : String = ""
+
+
+        if(medDetailEffects == ""){
+            medDetailEffectsTemp = "해당사항 없음"
+        }else{
+            medDetailEffectsTemp = medDetailEffects
+        }
+
+        if(medDetailUsage == ""){
+            medDetailUsageTemp = "해당사항 없음"
+        }else{
+            medDetailUsageTemp = medDetailUsage
+        }
+
+        if(medDetailContraindications == ""){
+            medDetailContraindicationsTemp = "해당사항 없음"
+        }else{
+            medDetailContraindicationsTemp = medDetailContraindications
+        }
+
+        if(medDetailPrecautions == ""){
+            medDetailPrecautionsTemp = "해당사항 없음"
+        }else{
+            medDetailPrecautionsTemp = medDetailPrecautions
+        }
+
+        detailBinding.medDetailEffects.text = medDetailEffectsTemp
+        detailBinding.medDetailUsage.text = medDetailUsageTemp
+        detailBinding.medDetailContraindications.text = medDetailContraindicationsTemp
+        detailBinding.medDetailPrecautions.text = medDetailPrecautionsTemp
 
         detailDialog.show()
     }
