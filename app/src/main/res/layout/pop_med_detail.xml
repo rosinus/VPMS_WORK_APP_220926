@@ -162,14 +162,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#EDEDED"
+                android:gravity="left"
                 android:paddingLeft="15dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="5dp"
-                android:text="보다 자세한 사항은 의사,약사와 상담하십시요."
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:layout_marginTop="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="당사는 의료 면허를 갖춘 의료 제공자가 아니며, 본 앱이 추구하는 목적은 질병에 대한 치료를 대체하고자 하는데 있지 않습니다. 만약 증상이나 건강 상태에 변화가 있는 경우, 반드시 의료 전문가와 상담하십시오. 당사는 여하한 실수나, 누락 혹은 의도하지 않은 기술적 오류, 제공된 자료의 오타에 대한 책임이 없습니다."
+                android:textColor="#7A7979"
+                android:textSize="14dp" />
 
         </LinearLayout>
     </ScrollView>

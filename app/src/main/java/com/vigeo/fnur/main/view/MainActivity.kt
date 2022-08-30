@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     var selectItems : ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_Fnur)
         super.onCreate(savedInstanceState)
         setContentView(mainBinding.root)
 
@@ -70,11 +71,15 @@ class MainActivity : AppCompatActivity() {
         //전체선택
         mainBinding.menuAll.setOnClickListener{
             var selectSpinner = spinner.selectedItem.toString()
+            allActiveRemove()
+            mainBinding.menuAll.setBackgroundResource(R.drawable.menu_active_border)
             medList(medCountry = selectSpinner);
         }
 
         mainBinding.menuHeadache.setOnClickListener{
             var selectSpinner = spinner.selectedItem.toString()
+            allActiveRemove()
+            mainBinding.menuHeadache.setBackgroundResource(R.drawable.menu_active_border)
             if(selectSpinner == "전체"){
                 selectSpinner = ""
             }
@@ -83,8 +88,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainBinding.menuCold.setOnClickListener{
-
             var selectSpinner = spinner.selectedItem.toString()
+            allActiveRemove()
+            mainBinding.menuCold.setBackgroundResource(R.drawable.menu_active_border)
             if(selectSpinner == "전체"){
                 selectSpinner = ""
             }
@@ -94,6 +100,8 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.menuDyspepsia.setOnClickListener{
             var selectSpinner = spinner.selectedItem.toString()
+            allActiveRemove()
+            mainBinding.menuDyspepsia.setBackgroundResource(R.drawable.menu_active_border)
             if(selectSpinner == "전체"){
                 selectSpinner = ""
             }
@@ -103,6 +111,8 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.menuToothache.setOnClickListener{
             var selectSpinner = spinner.selectedItem.toString()
+            allActiveRemove()
+            mainBinding.menuToothache.setBackgroundResource(R.drawable.menu_active_border)
             if(selectSpinner == "전체"){
                 selectSpinner = ""
             }
@@ -112,6 +122,8 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.menuJoint.setOnClickListener{
             var selectSpinner = spinner.selectedItem.toString()
+            allActiveRemove()
+            mainBinding.menuJoint.setBackgroundResource(R.drawable.menu_active_border)
             if(selectSpinner == "전체"){
                 selectSpinner = ""
             }
@@ -122,6 +134,15 @@ class MainActivity : AppCompatActivity() {
         countryList()
 
         medList();
+    }
+
+    fun allActiveRemove() {
+        mainBinding.menuAll.background = null
+        mainBinding.menuHeadache.background = null
+        mainBinding.menuCold.background = null
+        mainBinding.menuDyspepsia.background = null
+        mainBinding.menuToothache.background = null
+        mainBinding.menuJoint.background = null
     }
 
     fun spinner() {
@@ -141,8 +162,11 @@ class MainActivity : AppCompatActivity() {
                     selectSpinner = ""
                 }
 
+                //현재 나라변경시 전체로 이동중
+                allActiveRemove()
+                mainBinding.menuAll.setBackgroundResource(R.drawable.menu_active_border)
+
                 medList(medCountry = selectSpinner)
-                // TODO: 클릭했을때 변경되는 로직
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
