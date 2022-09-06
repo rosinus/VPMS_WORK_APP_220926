@@ -43,6 +43,9 @@ data class commonCodeObject(
 
     @SerializedName("comSort")
     val comSort: String,
+
+    @SerializedName("comImg")
+    val comImg: String,
 )
 
 data class medicineListObject(

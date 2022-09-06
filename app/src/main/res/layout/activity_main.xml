@@ -23,18 +23,28 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"></LinearLayout>
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/Country_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_gravity="center">
+            </ImageView>
+
+        </LinearLayout>
 
         <Spinner
             android:id="@+id/country_spinner"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:paddingTop="10dp"
             android:dropDownWidth="wrap_content"
             android:spinnerMode="dropdown"
-            android:textAlignment="center"
             android:gravity="center"
+            android:textAlignment="center"
             tools:ignore="SpeakableTextPresentCheck"></Spinner>
 
     </LinearLayout>

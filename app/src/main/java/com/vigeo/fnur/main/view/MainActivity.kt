@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder
 import com.vigeo.fnur.databinding.*
 import com.vigeo.fnur.main.service.MainService
 import com.vigeo.fnur.main.viewModel.MainVO
+import com.vigeo.fnur.main.viewModel.commonCodeObject
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -42,13 +43,13 @@ class MainActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
-    var selectItems : ArrayList<String> = ArrayList()
+    var selectItems : ArrayList<commonCodeObject> = ArrayList()
+    var selectItemsName : ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_Fnur)
         super.onCreate(savedInstanceState)
         setContentView(mainBinding.root)
-
         // 메뉴를 받아와서 뿌린다면 아래 주석처리된 소스를 사용하면됨.
         // 특히 이미지를 같이 받아와서 쓴다면 더좋다. 글자만 받아온다면 문제가 생길수 있음.
 
@@ -147,7 +148,7 @@ class MainActivity : AppCompatActivity() {
 
     fun spinner() {
         //스피너(select box)
-        val myAdapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, selectItems)
+        val myAdapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, selectItemsName)
         var spinner = mainBinding.countrySpinner
         spinner.adapter = myAdapter
         spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
@@ -161,6 +162,9 @@ class MainActivity : AppCompatActivity() {
                 if(selectSpinner == "전체"){
                     selectSpinner = ""
                 }
+
+                //나라 이미지 변경
+                mainBinding.CountryImg.load(selectItems[position].comImg) {}
 
                 //현재 나라변경시 전체로 이동중
                 allActiveRemove()
@@ -186,7 +190,8 @@ class MainActivity : AppCompatActivity() {
 
                     //나라 이름 넣어주기 작업
                     for (commonCodeObject in mainVO.countryAppList){
-                        selectItems.add(commonCodeObject.comNm)
+                        selectItems.add(commonCodeObject)
+                        selectItemsName.add(commonCodeObject.comNm)
                     }
 
                     spinner();
