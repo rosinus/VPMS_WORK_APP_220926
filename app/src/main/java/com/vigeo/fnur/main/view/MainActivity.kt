@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 //나라 이미지 변경
-                mainBinding.CountryImg.load(selectItems[position].comImg) {}
+                mainBinding.CountryImg.load("http://fnuri.vigeotech.com/upload/" + selectItems[position].comImg) {}
 
                 //현재 나라변경시 전체로 이동중
                 allActiveRemove()
@@ -372,6 +372,8 @@ class mainAdapter(
 
         detailBinding.medDetailImg.load(medImg) {
         }
+
+
 
         detailBinding.medDetailEffects.text = medDetailEffectsTemp
         detailBinding.medDetailUsage.text = medDetailUsageTemp
